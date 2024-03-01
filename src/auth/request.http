@@ -1,0 +1,29 @@
+### List all messages
+
+### Validate Token 
+POST http://localhost:3001/api/v1/auth/validatelogin
+content-type: application/json
+
+{
+    "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6ImJXOFpjTWpCQ25KWlMtaWJYNVVRRE5TdHZ4NCJ9.eyJ2ZXIiOiIyLjAiLCJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vOTE4ODA0MGQtNmM2Ny00YzViLWIxMTItMzZhMzA0YjY2ZGFkL3YyLjAiLCJzdWIiOiJBQUFBQUFBQUFBQUFBQUFBQUFBQUFJcDZGeDRQRmp5dEtZSXBWaUlaaWVzIiwiYXVkIjoiMjc4MDkyYzYtNmU1NC00YzViLTkzODMtOWMyMzMyMTMzMWY3IiwiZXhwIjoxNjgwMTg3ODIwLCJpYXQiOjE2ODAxODM5MjAsIm5iZiI6MTY4MDE4MzkyMCwibmFtZSI6IktldmluIE1lamlhIiwicHJlZmVycmVkX3VzZXJuYW1lIjoia2V2aW5fNjk1OEBob3RtYWlsLmNvbSIsIm9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC01MGYyLWMwMjQ0NjdkNjJkOSIsImVtYWlsIjoia2V2aW5fNjk1OEBob3RtYWlsLmNvbSIsInRpZCI6IjkxODgwNDBkLTZjNjctNGM1Yi1iMTEyLTM2YTMwNGI2NmRhZCIsImF6cCI6IjI3ODA5MmM2LTZlNTQtNGM1Yi05MzgzLTljMjMzMjEzMzFmNyIsInNjcCI6IkZpbGVzLlJlYWQiLCJhenBhY3IiOiIwIiwiYWlvIjoiRGYzdFo4eTlhbzlEOFpGWmttTUJFcnZpUGlsUXlFOXk3MzN6SG1DN3kyajlXRE1BaSpwZEsqT0djUVRSTmo3SkxPWiFqKlJHMVRjOGplQ0xLNkxaems5SE1tZEpxOEdsVEczc0pMRzJuNlNpNyFaIWJrTTJ4ODJxOUtmbTBFbXhUM01iWlZQQ1phSVhSTk5INmghcGtUbyQifQ.Aw27FuyOBfHbRZibKZ15W9SZk2zlr_rUpeU_jkwivTsBIEpms0ApFwlDyAiXXeMme94W3wJK_kYoI7JrdXkxG4FE8gfEq7E95mnRHYXpTYOC9XQfApArDyvvYPn81fGgcEo-s8oCm-VznwNyvHPouRB-aTT2x-__rpwg0Yf_tLmBItcmLIdr3ymnGkhRenFvSwud3Lx1MB1EFT57cnOhDPAdmslFwsy5V7oXw9xzB3KZRrjK6rt_RBXYP8IOqTnWIE7uUR42s1h5omh499kyyphkYgNcJ8HLDFXZLiO7JdcmltIFivJyEnZXZGI-lvyC_hwd4bYw0z5spou_IRckBA",
+    "loginprovider":"azureTokenValidation"
+}
+
+### Agregar Question
+POST http://localhost:3001/api/v1/question
+Content-Type: application/json
+
+{
+  "contexto": "Naturales",
+  "enunciado": "Aproximadamente, ¿cuántos huesos tiene el cuerpo humano?",
+  "opcionesRespuesta": "A"
+}
+
+### Actualizar Question
+PUT http://localhost:3001/api/v1/question/10
+Content-Type: application/json
+
+{
+  "contexto": "Ciencias Naturales",
+  "enunciado": "Aproximadamente, ¿cuántos huesos tiene el cuerpo humano?"
+}
