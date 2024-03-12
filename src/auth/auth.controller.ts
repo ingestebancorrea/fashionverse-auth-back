@@ -3,6 +3,8 @@ import { AuthService } from './auth.service';
 import { federationObjects } from './services/factory/FedarationObjects';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ErrorMessages } from 'src/common/enum/error-messages.enum';
+import { RegisterUserDto } from './dto/register-user.dto';
+import { LoginDto } from './dto/login.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -15,8 +17,8 @@ export class AuthController {
   @ApiResponse({status:401, description: ErrorMessages.NOT_VALID_TOKEN})
   @ApiResponse({status:500, description: ErrorMessages.APPLICATION_ERROR})
   @Post('services/register')
-  createUserWithServices( @Body('token') token: string, @Body('loginprovider') loginprovider: string, @Body('alias_role') aliasRole: string ){
-    return this.authService.createUserWithServices(token,federationObjects[loginprovider],aliasRole); 
+  createUserWithServices( @Body('') registerUserDto:RegisterUserDto ){
+    return this.authService.createUserWithServices(registerUserDto.token,federationObjects[registerUserDto.loginprovider],registerUserDto.alias_role); 
   }
 
   @ApiResponse({status:201, description: 'Success SingUp'})
@@ -34,8 +36,8 @@ export class AuthController {
   @ApiResponse({status:404, description: ErrorMessages.USER_NOT_FOUND})
   @ApiResponse({status:500, description: ErrorMessages.APPLICATION_ERROR})
   @Post('services/login')
-  loginWithServices( @Body('token') token: string, @Body('loginprovider') loginprovider: string ){
-    return this.authService.loginWithServices(token,federationObjects[loginprovider]); 
+  loginWithServices( @Body('') loginDto:LoginDto ){
+    return this.authService.loginWithServices(loginDto.token,federationObjects[loginDto.loginprovider]); 
   }
 
   @ApiResponse({status:400, description: ErrorMessages.BAD_LOGIN_INSTANCE})
@@ -54,7 +56,7 @@ export class AuthController {
   @Post('logout')
   logout( @Body('token') token: string ){
     return {
-
+      message: 'ok'
     }; 
   }
 

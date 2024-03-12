@@ -4,4 +4,5 @@ export class UserToReturnDto {
     email: string;
     displayName: string;
     photoURL: string;
+    role: object;
 }

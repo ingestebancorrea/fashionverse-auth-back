@@ -21,23 +21,23 @@ export class AuthService {
   
   async createUserWithServices(token:string, creatorFactory:CreatorFactory,aliasRole: string){
     const payload = await creatorFactory.checkToken(token);//CreateAzureFederation instead of creatorFactory
-    
+
     if(!payload){
       throw new BadRequestException(ErrorMessages.NOT_VALID_TOKEN)
     }
 
     let user = await this.usersService.findByEmail(payload.email);
-    
+
     if(!user){
       const role = await this.rolRepository.findOne({ where: { alias: aliasRole } });
-      
+
       const createUserDto:CreateUserDto = {
           username: payload.email,
           password: null,
           full_name: payload.full_name,
           image_url: payload.picture,
           sub: payload.sub,
-          role: role.id,
+          id_role: role.id,
           is_active: true
       }
       user = await this.usersService.store(createUserDto);
@@ -45,7 +45,8 @@ export class AuthService {
       throw new ConflictException(`User ${payload.email} already is registered`);
     }
     const access_token = this.jwtService.sign({ username: payload.email }, {secret: process.env.JWT_SECRET })
-    return {...user,access_token}
+    const objUser = await this.mapUser(user);
+    return {...objUser,access_token}
   }
 
   async createUserWithCredentials() {
@@ -63,7 +64,7 @@ export class AuthService {
       throw new NotFoundException(`User ${payload.email} not found`);
     }
 
-    const userToReturn = this.mapUser(user); 
+    const userToReturn = await this.mapUser(user); 
     const access_token = await this.generateAccesToken(userToReturn);
     return {...userToReturn,access_token}
   }
@@ -81,13 +82,20 @@ export class AuthService {
     );
   }
 
-  mapUser = (user:User):UserToReturnDto=> {
+  mapUser = async(user:User):Promise<UserToReturnDto>=> {
+    const role = await this.rolRepository.findOne({ where: { id: user.id_role } });
     const userToReturn:UserToReturnDto =
     {
       id: user.id,
       email: user.username,
       displayName: user.full_name,
-      photoURL: user.image_url || null
+      photoURL: user.image_url || null,
+      role: {
+        id: role.id,
+        name: role.name,
+        alias: role.alias,
+        is_active: role.is_active
+      } || {}
     }
     return userToReturn;
   }

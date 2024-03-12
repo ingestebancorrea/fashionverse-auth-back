@@ -56,7 +56,7 @@ export class CreateUserDto {
         description: 'This is a unique key',
     })
     @IsNumber()
-    role: number;
+    id_role: number;
 
     @ApiProperty({
         type: Boolean,

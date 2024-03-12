@@ -42,11 +42,11 @@ export class User {
     })
     is_active: boolean;
 
-    // Relación de uno a uno con la entidad Rol
+    // Relación de uno a uno con la entidad Role
     @Column({
         type: 'int', 
     })
-    role: number; 
+    id_role: number; 
 
     @BeforeInsert()
     checkFieldsBeforeInsert() {

@@ -57,10 +57,11 @@ export class UsersService {
 
   async findByEmail(username: string) {
     try{
-      const user = await this.userRepository.findOne({ where: { username }});      
+      const user = username && await this.userRepository.findOne({ where: { username }});      
       return user;
     }
     catch(error){
+      console.log(error);
       throw new InternalServerErrorException(ErrorMessages.INTERNAL_SERVER_ERROR)
     }
   }
