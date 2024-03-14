@@ -6,7 +6,6 @@ export class GoogleFederation implements IFederation {
     
     public async tokenValidate(token: string): Promise<any> {
         try{
-            console.log("token:",token);
             const client = new OAuth2Client(
                 process.env.GOOGLE_CLIENT_ID,
                 process.env.GOOGLE_SECRET,
