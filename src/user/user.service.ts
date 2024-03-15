@@ -31,6 +31,7 @@ export class UsersService {
         const user = this.userRepository.create(createUserDto);
         return await this.userRepository.save(user);
       }catch(error){
+        console.log("error:",error);
         const logger = new Logger();
         logger.error(error);
         throw new InternalServerErrorException(ErrorMessages.INTERNAL_SERVER_ERROR)

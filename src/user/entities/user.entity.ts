@@ -1,4 +1,3 @@
-import { Role } from "src/role/entities/role-entity";
 import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn, JoinColumn, OneToOne} from "typeorm";
 
 @Entity('users')
@@ -15,7 +14,6 @@ export class User {
 
     @Column({
         type:'varchar',
-        select: false,
         nullable: true
     })
     password: string;

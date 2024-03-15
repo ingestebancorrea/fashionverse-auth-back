@@ -7,5 +7,6 @@ export enum ErrorMessages {
     ROLE_NOT_FOUND = 'El rol no existe',
     DEFAULT_REQUEST_EXCEPTION = 'Ha habido un error interno, intenta de nuevo.  Si el problema persiste por favor comunícate con atención al cliente',
     UNAUTHORIZED_EXCEPTION = 'Unauthorized exception',
-    TOKEN_EXPIRED = 'El token expiró'
+    TOKEN_EXPIRED = 'El token expiró',
+    WRONG_USERNAME_PASSWORD = 'Usuario o password erróneos',
 }
