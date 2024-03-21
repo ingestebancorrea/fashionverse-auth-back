@@ -62,7 +62,13 @@ export class User {
     @Column({
         type: 'int', 
     })
-    auth_method_id: number; 
+    auth_method_id: number;
+    
+    @Column({
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP' 
+    })
+    created_at: Date;
 
     @BeforeInsert()
     checkFieldsBeforeInsert() {
