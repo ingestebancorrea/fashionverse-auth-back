@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ErrorMessages } from 'src/common/enum/error-messages.enum';
+import { JwtService } from '@nestjs/jwt';
+import { ErrorMessages } from 'src/common/enums/error-messages.enum';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { CreateUpdateUser } from './dto/createUpdateUser.dto';
@@ -11,7 +12,7 @@ export class UsersService {
 
   constructor(
     @InjectRepository(User) 
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
   ){}
 
   async findAll(): Promise<User[]>  {
@@ -65,5 +66,17 @@ export class UsersService {
       console.log(error);
       throw new InternalServerErrorException(ErrorMessages.INTERNAL_SERVER_ERROR)
     }
+  }
+
+  async extractIdUserOfToken(token: string){
+    const jwtService = new JwtService();
+    type Payload = {
+      uuid: string
+    }
+
+    const data = jwtService.decode(token);
+    const { uuid } = data && data as Payload;
+    
+    return uuid;
   }
 }

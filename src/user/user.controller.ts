@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards, NotFoundException, Put, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, NotFoundException, Put, HttpCode } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { CreateUpdateUser } from './dto/createUpdateUser.dto';
-import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 

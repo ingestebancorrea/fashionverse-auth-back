@@ -63,6 +63,12 @@ export class CreateUserDto {
         description: 'This allow know if a user is active or desactive in the system',
     })
     @IsBoolean()
-    is_active:boolean
+    is_active:boolean;
+
+    @IsNumber()
+    auth_provider_id:number
+
+    @IsNumber()
+    auth_method_id:number
 
 }

@@ -9,4 +9,8 @@ export enum ErrorMessages {
     UNAUTHORIZED_EXCEPTION = 'Unauthorized exception',
     TOKEN_EXPIRED = 'El token expiró',
     WRONG_USERNAME_PASSWORD = 'Usuario o password erróneos',
+    RESOURCE_NOT_FOUND = 'Recurso no encontrado',
+    BAD_REQUEST = 'Petición invalida',
+    CLIENT_CONFLICT = 'El cliente ya se encuentra registrado',
+    STORE_CONFLICT = 'La tienda ya se encuentra registrada'
 }

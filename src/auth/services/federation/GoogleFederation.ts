@@ -1,6 +1,6 @@
 import { BadRequestException, Logger } from "@nestjs/common";
 import { OAuth2Client } from "google-auth-library";
-import { ErrorMessages } from "src/common/enum/error-messages.enum";
+import { ErrorMessages } from "src/common/enums/error-messages.enum";
 
 export class GoogleFederation implements IFederation {
     

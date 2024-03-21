@@ -1,6 +1,6 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ErrorMessages } from 'src/common/enum/error-messages.enum';
+import { ErrorMessages } from 'src/common/enums/error-messages.enum';
 import { UsersService } from 'src/user/user.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { CreatorFactory } from './services/factory/CreatorFactory';
@@ -12,6 +12,9 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { RegisterUserWithCredentialsDto } from './dto/register-user-with-credentials.dto';
 import { LoginWithCredentialsDto } from './dto/login-with-credentials.dto';
+import { AuthenticationMethodsService } from 'src/authentication_methods/authentication_methods.service';
+import { AuthenticationProvidersService } from 'src/authentication_providers/authentication_providers.service';
+import { objectBDFederations, objectCredentials } from './services/federation/federationObjects';
 
 @Injectable()
 export class AuthService {
@@ -20,9 +23,11 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     @InjectRepository(Role) private rolRepository: Repository<Role>,
+    private readonly authenticationMethodService: AuthenticationMethodsService,
+    private readonly authenticationProvider: AuthenticationProvidersService,
   ) { }
 
-  async createUserWithServices(token: string, creatorFactory: CreatorFactory, aliasRole: string) {
+  async createUserWithServices(token: string, creatorFactory: CreatorFactory, aliasRole: string,loginProvider: string) {
     const payload = await creatorFactory.checkToken(token);//CreateAzureFederation instead of creatorFactory
 
     if (!payload) {
@@ -41,7 +46,9 @@ export class AuthService {
         image_url: payload.picture,
         sub: payload.sub,
         id_role: role.id,
-        is_active: true
+        is_active: true,
+        auth_method_id: (await this.authenticationMethodService.findByAlias(objectBDFederations[loginProvider].authenticationmethod)).id,
+        auth_provider_id: (await this.authenticationProvider.findByAlias(objectBDFederations[loginProvider].authenticationprovider)).id
       }
       user = await this.usersService.store(createUserDto);
     } else {
@@ -53,11 +60,12 @@ export class AuthService {
   }
 
   async createUserWithCredentials(registerUserWithCredentialsDto: RegisterUserWithCredentialsDto) {
+    let newUser:User;
     const user = await this.usersService.findByEmail(registerUserWithCredentialsDto.username);
 
     if (!user) {
       const role: Role = await this.rolRepository.findOne({ where: { alias: registerUserWithCredentialsDto.alias_role } });
-
+  
       const createUserDto: CreateUserDto = {
         username: registerUserWithCredentialsDto.username,
         password: bcrypt.hashSync(registerUserWithCredentialsDto.password, 10),
@@ -66,12 +74,14 @@ export class AuthService {
         sub: null,
         is_active: true,
         id_role: role.id,
+        auth_method_id: (await this.authenticationMethodService.findByAlias(objectCredentials["normalTokenValidation"].authenticationmethod)).id,
+        auth_provider_id: (await this.authenticationProvider.findByAlias(objectCredentials["normalTokenValidation"].authenticationprovider)).id
       }
-
-      await this.usersService.store(createUserDto);
+      console.log('createUser:',createUserDto);
+      newUser = await this.usersService.store(createUserDto);
     }
 
-    const userToReturn = await this.mapUser(user);
+    const userToReturn = await this.mapUser(user ? user : newUser);
     const access_token = await this.generateAccesToken(userToReturn);
     return { ...userToReturn, access_token }
   }
@@ -94,7 +104,6 @@ export class AuthService {
 
   async loginWithCredentials(loginWithCredentialsUserDto: LoginWithCredentialsDto) {
     const { username, password } = loginWithCredentialsUserDto;
-
     const user = await this.usersService.findByEmail(username);
 
     if (!user)
@@ -110,9 +119,10 @@ export class AuthService {
   async generateAccesToken(user: any) {
     return await this.jwtService.signAsync(
       {
-        uuid: user.uid,
+        uuid: user.uuid,
         username: user.email,
         name: user.displayName,
+        activerole: user.role.alias
       }, {
       secret: process.env.JWT_SECRET,
       expiresIn: '60m'
@@ -125,6 +135,7 @@ export class AuthService {
     const userToReturn: UserToReturnDto =
     {
       id: user.id,
+      uuid: user.user_uuid,
       email: user.username,
       displayName: user.full_name,
       photoURL: user.image_url || null,

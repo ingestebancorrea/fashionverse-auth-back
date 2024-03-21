@@ -1,6 +1,6 @@
 import { BadRequestException, Logger } from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
-import { ErrorMessages } from "src/common/enum/error-messages.enum";
+import { ErrorMessages } from "src/common/enums/error-messages.enum";
 
 export class AzureFederation implements IFederation{
     public async tokenValidate(token: string): Promise<any> {
