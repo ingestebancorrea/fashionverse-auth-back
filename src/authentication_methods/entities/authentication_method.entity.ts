@@ -8,14 +8,12 @@ export class AuthenticationMethod {
 
     @Column( {
         type:'varchar',
-        default: true,
         name:'name'
     })
     name: string;
 
     @Column( {
         type:'varchar',
-        default: true,
         name:'alias'
     })
     alias: string;

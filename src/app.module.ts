@@ -32,7 +32,7 @@ import { AuthenticationMethodsModule } from './authentication_methods/authentica
       subscribers: [  ],
       ssl: true,
       autoLoadEntities: true,
-      synchronize: true
+      synchronize: false
     }),
     AuthModule, 
     UserModule, 
