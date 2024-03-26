@@ -44,7 +44,8 @@ export class Client {
     user_uuid: string; 
 
     @Column({
-        type: 'int', 
+        type: 'int',
+        nullable: true 
     })
     id_address: number; 
 

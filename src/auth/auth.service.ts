@@ -27,7 +27,7 @@ export class AuthService {
     private readonly authenticationProvider: AuthenticationProvidersService,
   ) { }
 
-  async createUserWithServices(token: string, creatorFactory: CreatorFactory, aliasRole: string,loginProvider: string) {
+  async createUserWithServices(token: string, creatorFactory: CreatorFactory, aliasRole: string, loginProvider: string) {
     const payload = await creatorFactory.checkToken(token);//CreateAzureFederation instead of creatorFactory
 
     if (!payload) {
@@ -54,18 +54,20 @@ export class AuthService {
     } else {
       throw new ConflictException(`User ${payload.email} already is registered`);
     }
-    const access_token = this.jwtService.sign({ username: payload.email }, { secret: process.env.JWT_SECRET })
-    const objUser = await this.mapUser(user);
-    return { ...objUser, access_token }
+
+    const userToReturn = await this.mapUser(user);
+    const access_token = await this.generateAccesToken(userToReturn);
+
+    return { ...userToReturn, access_token }
   }
 
   async createUserWithCredentials(registerUserWithCredentialsDto: RegisterUserWithCredentialsDto) {
-    let newUser:User;
+    let newUser: User;
     const user = await this.usersService.findByEmail(registerUserWithCredentialsDto.username);
 
     if (!user) {
       const role: Role = await this.rolRepository.findOne({ where: { alias: registerUserWithCredentialsDto.alias_role } });
-  
+
       const createUserDto: CreateUserDto = {
         username: registerUserWithCredentialsDto.username,
         password: bcrypt.hashSync(registerUserWithCredentialsDto.password, 10),
@@ -77,7 +79,7 @@ export class AuthService {
         auth_method_id: (await this.authenticationMethodService.findByAlias(objectCredentials["normalTokenValidation"].authenticationmethod)).id,
         auth_provider_id: (await this.authenticationProvider.findByAlias(objectCredentials["normalTokenValidation"].authenticationprovider)).id
       }
-      console.log('createUser:',createUserDto);
+
       newUser = await this.usersService.store(createUserDto);
     }
 

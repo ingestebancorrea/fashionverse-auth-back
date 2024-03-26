@@ -30,7 +30,7 @@ import { AuthenticationMethodsModule } from './authentication_methods/authentica
       database: process.env.DB_DATABASE,
       entities: [ User ],
       subscribers: [  ],
-      ssl: true,
+      // ssl: true,
       autoLoadEntities: true,
       synchronize: false
     }),

@@ -33,6 +33,7 @@ export class User {
 
     @Column({
         type:'varchar',
+        nullable: true
     })
     sub: string;
 
