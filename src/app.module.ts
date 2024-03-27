@@ -13,6 +13,8 @@ import { CitiesModule } from './cities/cities.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { AuthenticationProvidersModule } from './authentication_providers/authentication_providers.module';
 import { AuthenticationMethodsModule } from './authentication_methods/authentication_methods.module';
+import { PreferencesModule } from './preferences/preferences.module';
+import { ClientpreferencesModule } from './clientpreferences/clientpreferences.module';
 
 @Module({
   imports: [
@@ -37,7 +39,7 @@ import { AuthenticationMethodsModule } from './authentication_methods/authentica
     AuthModule, 
     UserModule, 
     ClientsModule, 
-    DocumenttypesModule, StoresModule, StorestypeModule, DepartmentsModule, CitiesModule, AddressesModule, AuthenticationProvidersModule, AuthenticationMethodsModule, 
+    DocumenttypesModule, StoresModule, StorestypeModule, DepartmentsModule, CitiesModule, AddressesModule, AuthenticationProvidersModule, AuthenticationMethodsModule, PreferencesModule, ClientpreferencesModule, 
   ]
 })
 export class AppModule {}

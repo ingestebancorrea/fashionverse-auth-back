@@ -35,6 +35,7 @@ export class Client {
 
     @Column({
         type: 'bool', 
+        default: true,
     })
     is_active: boolean;
 

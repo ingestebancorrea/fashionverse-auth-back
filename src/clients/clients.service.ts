@@ -53,4 +53,15 @@ export class ClientsService {
   update(id: number, updateClientDto: UpdateClientDto) {
     return `This action updates a #${id} client`;
   }
+
+  async findByUserUUID(uuid: string){
+    return await this.clientRepository.findOne({
+      where: {
+        user_uuid: uuid
+      },
+      select: {
+        id: true
+      }
+    });
+  }
 }
