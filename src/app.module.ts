@@ -32,7 +32,7 @@ import { ClientpreferencesModule } from './clientpreferences/clientpreferences.m
       database: process.env.DB_DATABASE,
       entities: [ User ],
       subscribers: [  ],
-      ssl: true,
+      // ssl: true,
       autoLoadEntities: true,
       synchronize: false
     }),
