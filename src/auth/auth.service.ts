@@ -71,7 +71,7 @@ export class AuthService {
       const createUserDto: CreateUserDto = {
         username: registerUserWithCredentialsDto.username,
         password: bcrypt.hashSync(registerUserWithCredentialsDto.password, 10),
-        full_name: `${registerUserWithCredentialsDto.name} ${registerUserWithCredentialsDto.lastname}`,
+        full_name: registerUserWithCredentialsDto.name && registerUserWithCredentialsDto.lastname ? `${registerUserWithCredentialsDto.name} ${registerUserWithCredentialsDto.lastname}` : null,
         image_url: null,
         sub: null,
         is_active: true,
@@ -123,7 +123,7 @@ export class AuthService {
       {
         uuid: user.uuid,
         username: user.email,
-        name: user.displayName,
+        name: user.displayName || null,
         activerole: user.role.alias
       }, {
       secret: process.env.JWT_SECRET,
@@ -139,7 +139,7 @@ export class AuthService {
       id: user.id,
       uuid: user.user_uuid,
       email: user.username,
-      displayName: user.full_name,
+      displayName: user.full_name || null,
       photoURL: user.image_url || null,
       role: {
         id: role.id,
