@@ -118,6 +118,21 @@ export class AuthService {
     return { ...userToReturn, access_token }
   }
 
+  async verifyToken(token: string){
+    const jwtService = new JwtService();
+    type Payload = {
+      username: string
+    }
+
+    const data = jwtService.decode(token);
+    const { username } = data && data as Payload;
+
+    const user = await this.usersService.findByEmail(username);
+    const userToReturn = await this.mapUser(user);
+    const access_token = await this.generateAccesToken(userToReturn);
+    return { ...userToReturn, access_token }
+  }
+
   async generateAccesToken(user: any) {
     return await this.jwtService.signAsync(
       {

@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Headers } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { federationObjects } from './services/factory/FedarationObjects';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -57,6 +57,15 @@ export class AuthController {
     return {
       message: 'ok'
     }; 
+  }
+
+  @ApiResponse({status:400, description: ErrorMessages.BAD_LOGIN_INSTANCE})
+  @ApiResponse({status:401, description: ErrorMessages.NOT_VALID_TOKEN})
+  @ApiResponse({status:500, description: ErrorMessages.APPLICATION_ERROR})
+  @Get('')
+  async verifyToken( @Headers('Authorization') request: any, ){
+    const jwt = request.replace('Bearer ', '');
+    return await this.authService.verifyToken(jwt);
   }
 
 
