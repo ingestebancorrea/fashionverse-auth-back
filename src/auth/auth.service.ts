@@ -142,7 +142,7 @@ export class AuthService {
         activerole: user.role.alias
       }, {
       secret: process.env.JWT_SECRET,
-      expiresIn: '60m'
+      expiresIn: '24h'
     }
     );
   }
