@@ -65,4 +65,13 @@ export class StoresService {
     return `This action updates a #${id} store`;
   }
 
+  async findByUserUuid(token: string) {
+    const uuid = await this.userService.extractIdUserOfToken(token);
+    return await this.storeRepository.findOne({
+      where: {
+        user_uuid: uuid
+      }
+    });
+  }
+
 }

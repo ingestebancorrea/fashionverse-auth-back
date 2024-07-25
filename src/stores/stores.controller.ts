@@ -38,4 +38,17 @@ export class StoresController {
     return this.storesService.update(+id, updateStoreDto);
   }
 
+  @ApiResponse({status:200, description: SuccessMessages.SUCCESS_RETURN })
+  @ApiResponse({status:400, description: ErrorMessages.BAD_REQUEST})
+  @ApiResponse({status:401, description: ErrorMessages.NOT_VALID_TOKEN})
+  @ApiResponse({status:500, description: ErrorMessages.APPLICATION_ERROR})
+  @RolesDec(Roles.STORE)
+  @UseGuards(RoleGuard)
+  @Get('by/user')
+  async findByUserUuid(@Headers('Authorization') request: any) {
+    const jwt = request.replace('Bearer ', '');
+
+    return await this.storesService.findByUserUuid(jwt);
+  }
+
 }
